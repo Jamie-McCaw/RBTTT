@@ -6,3 +6,4 @@ gem "rspec"
 gem "cucumber"
 gem "guard-cucumber"
 gem "guard-rspec"
+gem "simplecov", :require => false, :group => :test
