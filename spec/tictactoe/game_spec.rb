@@ -2,128 +2,102 @@ require 'spec_helper'
 
 describe Game do
 
-    let(:io)     { InputOutput.new }
+    let(:io)     { stub(InputOutput.class) }
     let(:game)   { Game.new(io) }
-    let(:cells)  { cells = [0,1,2,3,4,5,6,7,8] }
-    let(:board)  {
-<<-BOARD
-#{cells[0]} | #{cells[1]} | #{cells[2]}
----+---+---
-#{cells[3]} | #{cells[4]} | #{cells[5]}
----+---+---
-#{cells[6]} | #{cells[7]} | #{cells[8]}
-BOARD
-}
+    let(:ai)     { AI.new('O')}
+    let(:board)  { Board.new }
+
 
   describe "start" do
 
-    it "sends a welcome message" do
-      game.should_receive(:print_welcome_message)
-      game.setup_game
+    it "shows the welcome message" do
+      io.should_receive(:outputs).with("Welcome to Tic Tac Toe!")
+      game.print_welcome_message
     end
 
-    it "shows the board" do
-      game.should_receive(:draw_board)
-      game.setup_game
-     # io.should_receive(:puts).with(board)
-     # io.outputs(board)
+    it "prints out the board" do
+      io.should_receive(:outputs).with(board.board_design)
+      game.print_board
     end
 
     it "shows whos turn it is" do
-      io.should_receive(:puts).with("It is X's turn")
-      io.outputs("It is X's turn")
+      io.should_receive(:outputs).with("It is X's turn")
+      game.print_player_x_turn
     end
 
     it "shows a prompt for input" do
-      io.should_receive(:puts).with("-> ")
-      io.outputs("-> ")
+      io.should_receive(:prints).with("-> ")
+      game.print_input_symbol
     end
 
     it "gets input from the player" do
       io.should_receive(:input).and_return('X')
       io.input.should == 'X'
     end
-
-    it "places a move at cell 1" do
-      game.move(1).should == 'X'
-    end
   end
 
   describe "game" do
 
-    it "show available moves" do
-      moves = game.available_moves
-      moves.should == 9
-    end
-
-    it "places a move" do
-      game.move(0)
-      game.cells[0].should == 'X'
-    end
+    it "displays invalid_move" do
+      io.should_receive(:outputs).with("Invalid Choice")
+      game.should_receive(:get_move)
+      game.invalid_move
+    end                                                                                                    
 
     it "runs through end_turn" do
-      game.should_receive(:clear_screen)
-      game.should_receive(:setup_game)
+      game.should_receive(:draw_board)
+      game.should_receive(:check_game_state)
+      game.should_receive(:computer_turn)
       game.should_receive(:check_game_state)
       game.end_turn
+    end
+
+    it "sets up the game board" do
+      game.should_receive(:clear_screen)
+      game.should_receive(:print_welcome_message)
+      game.should_receive(:print_board)
+      game.should_receive(:print_player_x_turn)
+      game.should_receive(:print_input_symbol)
+      game.draw_board
+    end
+
+    it "prints the winning message" do
+      board_double = mock "Board"
+      io.stub(:outputs)
+      game.board = board_double
+      board_double.should_receive(:winner).exactly(2).times.and_return('X')
+      game.print_winning_message
+    end
+
+    it "validates user input" do
+      stubbed = 0
+      io.stub(:input) {stubbed}
+      game.should_receive(:validate_user_input).with(stubbed)
+      game.get_move
     end
   end
 
   describe "end" do
-
     it "tests whether the game is won" do
       game.check_game_state.should be_false
     end
+  end
 
-    it "tests whether the game is won and shows who won" do
-      game.move(0)
-      game.move(1)
-      game.move(2)
-      game.should_receive(:print_winning_message)
-      game.check_game_state
-    end
-
-    it "shows the game is not over" do
-      game.game_over?.should be_false
-    end
-
-    it "shows the game is over" do
-      game.should_receive(:available_moves).and_return(0)
-      game.game_over?.should be_true
-    end
-
-    it "shows a tie game" do
-      game.should_receive(:available_moves).and_return(0)
-      game.tie?.should be_true
-    end
-
-    it "shows X is the winner" do
-      game.should_receive(:player_wins?).with('X').and_return(true)
-      game.winner.should == 'X'
-    end
-
-    it "shows O is the winner" do
-      game.should_receive(:player_wins?).with('O').and_return(true)
-      game.should_receive(:player_wins?).with('X').and_return(false)
-      game.winner.should == 'O'
+  describe "#clear_screen" do
+    it "clears the screen" do
+      game.should_receive('system').with('clear')
+      game.clear_screen
     end
   end
 
-  describe "winning moves" do
-
-    it "tells us there is a winner for vertical" do
-      game.cells = ['X','X','X',3,4,5,6,7,8]
-      game.player_wins?('X').should be_true
-    end
-
-    it "tells us there is a winner for horizontal" do
-      game.cells = ['O',1,2,'O',4,5,'O',7,8]
-      game.player_wins?('O').should be_true
-    end
-
-    it "tells us there is a winner for diagonal" do
-      game.cells = ['Q',1,2,3,'Q',5,6,7,'Q']
-      game.player_wins?('Q').should be_true
+  describe "computer_turn" do
+    it "goes through the computers turn" do
+      io.should_receive(:outputs).with("Thinking...")
+      ai_double = mock "AI"
+      game.ai = ai_double
+      ai_double.should_receive(:make_move).and_return(0)
+      game.computer_turn
     end
   end
+
 end

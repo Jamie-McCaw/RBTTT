@@ -1,16 +1,12 @@
 class Game
 
-  attr_accessor :cells, :io
+  attr_accessor :board, :ai
 
-  def initialize(io = InputOutput.new ,cells = [0,1,2,3,4,5,6,7,8])
+  def initialize(io = InputOutput.new)
     @io = io
-    @cells = cells
-  end
-
-  def setup_game
-    print_welcome_message
-    draw_board
-    print_player_x_turn
+    @type = 'O'
+    @ai = AI.new('O')
+    @board = Board.new
   end
 
   def print_welcome_message
@@ -19,25 +15,35 @@ class Game
 
   def print_player_x_turn
     @io.outputs "It is X's turn"
-    @io.outputs "-> "
   end
 
-  def available_moves
-    moves = 0
-    @cells.each do |cell|
-      if cell.is_a?(Numeric)
-        moves += 1
-      end
-    end
-    return moves
+  def print_input_symbol
+    @io.prints "-> "
   end
 
   def game_loop
-    setup_game
-    until game_over? do
-      move(@io.input)
+    until @board.game_over?
+      draw_board      
+      @board.move(get_move, 'X')
       end_turn
     end
+  end
+
+  def get_move
+    validate_user_input(@io.input)
+  end
+
+  def validate_user_input(user_input)
+    if user_input =~ /[0-9]/ && @board.move_available?(user_input.to_i)
+      return user_input.to_i.abs
+    else
+      invalid_move
+    end
+  end
+
+  def invalid_move
+    @io.outputs "Invalid Choice"
+    get_move
   end
 
   def clear_screen
@@ -45,77 +51,38 @@ class Game
   end
 
   def end_turn
-    clear_screen
-    setup_game
+    draw_board
     check_game_state
-
+    computer_turn
+    check_game_state
   end
 
   def check_game_state
-    if game_over?
+    if @board.game_over?
       print_winning_message
     end
   end
 
   def print_winning_message
-    @io.outputs winner + " Wins"
+    @io.outputs(@board.winner + " Wins") if @board.winner
+    @io.outputs "Tie Game"        
   end
-
-  def game_over?
-    return true if winner
-    return true if tie?
-    false
-  end
-
-  def tie?
-    return true if !winner && available_moves < 1
-  end
-
-  def winner
-    return 'X' if player_wins?('X')
-    return 'O' if player_wins?('O')
-    return nil
-  end
-
-  def player_wins?(sym)
-    response = false
-    winning_moves.each do |move_set|
-      if move_set.all? { |cell| cell == sym}
-        response = true
-        break
-      else
-        response = false
-      end
-    end
-    return response
-  end
-
-  def move(cell)
-    @cells[cell.to_i] = 'X'
-  end
-
+  
   def draw_board
-    @io.outputs <<-BOARD
-#{@cells[0]} | #{@cells[1]} | #{@cells[2]}
----+---+---
-#{@cells[3]} | #{@cells[4]} | #{@cells[5]}
----+---+---
-#{@cells[6]} | #{@cells[7]} | #{@cells[8]}
-BOARD
+    clear_screen
+    print_welcome_message
+    print_board
+    print_player_x_turn
+    print_input_symbol
   end
 
-  def winning_moves
-    [
-    [ @cells[0], @cells[1], @cells[2] ],
-    [ @cells[3], @cells[4], @cells[5] ],
-    [ @cells[6], @cells[7], @cells[8] ],
+  def print_board
+    @io.outputs @board.board_design
+  end
 
-    [ @cells[0], @cells[3], @cells[6] ],
-    [ @cells[1], @cells[4], @cells[7] ],
-    [ @cells[2], @cells[5], @cells[8] ],
-
-    [ @cells[0], @cells[4], @cells[8] ],
-    [ @cells[6], @cells[4], @cells[2] ]
-    ]
+  def computer_turn
+    @io.outputs "Thinking..."
+    move = @ai.make_move(@board)
+    @board.move(move, @type)
   end
 end
