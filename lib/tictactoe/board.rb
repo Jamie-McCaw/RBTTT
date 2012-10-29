@@ -1,4 +1,5 @@
 class Board
+  THREEBYTHREE = 9
   attr_accessor :cells
 
   def initialize(cells = [0,1,2,3,4,5,6,7,8])
@@ -42,7 +43,8 @@ class Board
   end
 
   def player_wins?(type)
-    winning_moves.each do |move_set|
+    moves = cells.count == THREEBYTHREE ? winning_moves_three_by_three : winning_moves_four_by_four
+    moves.each do |move_set|
       if move_set.all? { |cell| cell == type}
         return true
       end
@@ -60,7 +62,7 @@ class Board
 BOARD
   end
 
-  def winning_moves
+  def winning_moves_three_by_three
     [
     [ @cells[0], @cells[1], @cells[2] ],
     [ @cells[3], @cells[4], @cells[5] ],
@@ -72,6 +74,23 @@ BOARD
 
     [ @cells[0], @cells[4], @cells[8] ],
     [ @cells[6], @cells[4], @cells[2] ]
+    ]
+  end
+
+  def winning_moves_four_by_four
+    [
+    [ @cells[0], @cells[1], @cells[2], @cells[3] ],
+    [ @cells[4], @cells[5], @cells[6], @cells[7] ],
+    [ @cells[8], @cells[9], @cells[10], @cells[11] ],
+    [ @cells[12], @cells[13], @cells[14], @cells[15] ],
+
+    [ @cells[0], @cells[4], @cells[8], @cells[12] ],
+    [ @cells[1], @cells[5], @cells[9], @cells[13] ],
+    [ @cells[2], @cells[6], @cells[10], @cells[14] ],
+    [ @cells[3], @cells[7], @cells[11], @cells[15] ],
+
+    [ @cells[0], @cells[5], @cells[10], @cells[15] ],
+    [ @cells[3], @cells[6], @cells[9], @cells[12] ],
     ]
   end
 end
