@@ -23,7 +23,7 @@ class Game
 
   def game_loop
     until @board.game_over?
-      draw_board      
+      draw_board
       @board.move(get_move, 'X')
       end_turn
     end
@@ -42,8 +42,13 @@ class Game
   end
 
   def invalid_move
-    @io.outputs "Invalid Choice"
+    invalid_choice
+    print_input_symbol
     get_move
+  end
+
+  def invalid_choice
+    @io.outputs "Invalid Choice"
   end
 
   def clear_screen
@@ -52,7 +57,6 @@ class Game
 
   def end_turn
     draw_board
-    check_game_state
     computer_turn
     check_game_state
   end
@@ -65,9 +69,9 @@ class Game
 
   def print_winning_message
     @io.outputs(@board.winner + " Wins") if @board.winner
-    @io.outputs "Tie Game"        
+    @io.outputs "Tie Game"
   end
-  
+
   def draw_board
     clear_screen
     print_welcome_message

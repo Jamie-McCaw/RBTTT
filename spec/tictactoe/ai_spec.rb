@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 	describe AI do
-		
+
 	let(:board) { Board.new }
 	let(:ai)		{ AI.new('O') }
-		
+
 	  describe "ai" do
 
 	    it "makes the computer win" do
@@ -20,4 +20,15 @@ require 'spec_helper'
 	      ai.make_move(board).should == 4
 	    end
 	  end
+
+    describe "player wins" do
+      it "shows positive for player winning" do
+        board.stub(:winner) { 'X' }
+        ai.winner(board, 'X').should == 1
+      end
+      it "shows negative for opponent winning" do
+        board.stub(:winner) { 'X' }
+        ai.winner(board, 'O').should == -1
+      end
+    end
 	end

@@ -10,23 +10,14 @@ class Board
   end
 
   def available_moves
-    moves = 0
-    @cells.each do |cell|
-      if cell.is_a?(Numeric)
-        moves += 1
-      end
+    @cells.inject(0) do |sum, cell|
+      sum += (cell.is_a?(Numeric) ? 1 : 0 )
     end
-    return moves
   end
 
   def move_available?(cell)
-    move = @cells[cell]
-    if move.is_a?(Numeric)
-      return true
-    else
-      return false
-    end
-  end 
+    @cells[cell].is_a?(Numeric)
+  end
 
   def move(cell, type)
     if move_available?(cell)
@@ -51,17 +42,13 @@ class Board
   end
 
   def player_wins?(type)
-    response = false
     winning_moves.each do |move_set|
       if move_set.all? { |cell| cell == type}
-        response = true
-        break
-      else
-        response = false
+        return true
       end
     end
-    return response
-  end  
+    return false
+  end
 
   def board_design
     board = <<-BOARD

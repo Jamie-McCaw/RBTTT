@@ -41,12 +41,12 @@ describe Game do
     it "displays invalid_move" do
       io.should_receive(:outputs).with("Invalid Choice")
       game.should_receive(:get_move)
+      game.should_receive(:print_input_symbol)
       game.invalid_move
-    end                                                                                                    
+    end
 
     it "runs through end_turn" do
       game.should_receive(:draw_board)
-      game.should_receive(:check_game_state)
       game.should_receive(:computer_turn)
       game.should_receive(:check_game_state)
       game.end_turn
