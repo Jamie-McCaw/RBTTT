@@ -32,7 +32,7 @@ class AI
         best_rank = -999
         opponent = opponent(player)
 
-        for i in 0..8
+        for i in 0..(board.cells.count)
           if board.move_available?(i)
             current_board = board.dup
             current_board.move(i, player)

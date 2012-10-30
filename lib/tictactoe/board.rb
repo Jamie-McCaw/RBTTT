@@ -53,12 +53,32 @@ class Board
   end
 
   def board_design
+    if @cells.count == 9
+      return board_design_three_by_three
+    elsif @cells.count == 16
+      return board_design_four_by_four
+    end
+  end
+
+  def board_design_three_by_three
     board = <<-BOARD
-#{@cells[0]} | #{@cells[1]} | #{@cells[2]}
+ #{@cells[0]} | #{@cells[1]} | #{@cells[2]}
 ---+---+---
-#{@cells[3]} | #{@cells[4]} | #{@cells[5]}
+ #{@cells[3]} | #{@cells[4]} | #{@cells[5]}
 ---+---+---
-#{@cells[6]} | #{@cells[7]} | #{@cells[8]}
+ #{@cells[6]} | #{@cells[7]} | #{@cells[8]}
+BOARD
+  end
+
+  def board_design_four_by_four
+    board = <<-BOARD
+ #{@cells[0]} | #{@cells[1]} | #{@cells[2]} | #{@cells[3]}
+---+---+---+---
+ #{@cells[4]} | #{@cells[5]} | #{@cells[6]} | #{@cells[7]}
+---+---+---+---
+ #{@cells[8]} | #{@cells[9]} | #{@cells[10]}| #{@cells[11]}
+---+---+---+---
+ #{@cells[12]}| #{@cells[13]}| #{@cells[14]}| #{@cells[15]}
 BOARD
   end
 
