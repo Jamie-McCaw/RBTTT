@@ -16,6 +16,11 @@ class Board
     end
   end
 
+  def available_spaces
+    available_spaces = @cells.each_with_index.select { |i, idx| i.is_a?(Numeric) }
+    available_spaces = available_spaces.map{|i| i[1] }
+  end
+
   def move_available?(cell)
     @cells[cell].is_a?(Numeric)
   end

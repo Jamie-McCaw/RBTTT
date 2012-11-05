@@ -3,12 +3,14 @@ require 'spec_helper'
 	describe AI do
 
 	let(:board) { Board.new }
-	let(:ai)		{ AI.new('O') }
+	let(:ai)	{ AI.new('O') }
 
 	  describe "ai" do
 
 	    it "makes the computer win" do
 	      board.move(0,'O')
+	      board.move(4,'X')
+	      board.move(3,'X')
 	      board.move(1,'O')
 	      ai.make_move(board).should == 2
 	    end

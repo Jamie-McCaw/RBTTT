@@ -8,6 +8,8 @@ describe Game do
   context "3x3" do
     let(:board)  { Board.new([0,1,2,3,4,5,6,7,8]) }
 
+
+
     describe "start" do
 
       it "shows the game size menu" do

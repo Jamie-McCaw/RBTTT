@@ -40,6 +40,12 @@ describe Board do
       end
     end
 
+    describe "available spaces" do
+      it "makes an array of the available moves" do
+        moves = board.available_spaces
+        moves.should == [0,1,2,3,4,5,6,7,8]
+      end
+    end
     describe "available moves" do
       it "show available moves" do
         moves = board.available_moves

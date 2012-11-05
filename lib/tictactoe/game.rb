@@ -6,7 +6,7 @@ class Game
     @io = io
     @type = 'O'
     @ai = AI.new('O')
-    @board = Board.new#@board = Board.new(menu)
+    @board = Board.new
   end
 
   def menu
@@ -36,15 +36,16 @@ class Game
   def get_menu_input
     choice = @io.input.to_i
     if choice == 1
-      return [0,1,2,3,4,5,6,7,8]
+      @board = Board.new([0,1,2,3,4,5,6,7,8])
     elsif choice == 2
-      return [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+      @board = Board.new([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
     else
       menu
     end
   end
 
   def game_loop
+    menu
     until @board.game_over?
       draw_board
       @board.move(get_move, 'X')
