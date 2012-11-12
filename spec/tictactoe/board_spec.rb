@@ -8,7 +8,7 @@ describe Board do
 
   context "3x3" do
     let(:cells)  { cells = [0,1,2,3,4,5,6,7,8] }
-    let(:board)  { Board.new }
+    let(:board)  { Board3x3.new }
 
     describe "winning moves" do
 
@@ -82,7 +82,7 @@ describe Board do
   end
 
   context "4x4" do
-    let(:board)  { Board.new([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) }
+    let(:board)  { Board4x4.new }
 
     describe "available_moves" do
 

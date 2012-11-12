@@ -6,8 +6,7 @@ describe Game do
   let(:ai)     { AI.new('O')}
 
   context "3x3" do
-    let(:board)  { Board.new([0,1,2,3,4,5,6,7,8]) }
-
+    let(:board)  { Board3x3.new }
 
 
     describe "start" do
@@ -84,7 +83,7 @@ describe Game do
       end
 
       it "prints the winning message" do
-        board_double = mock "Board"
+        board_double = mock "Board3x3"
         io.stub(:outputs)
         game.board = board_double
         board_double.should_receive(:winner).exactly(2).times.and_return('X')
@@ -125,7 +124,7 @@ describe Game do
 
   context "4x4" do
 
-    let(:board)  { Board.new([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) }
+    let(:board)  { Board4x4.new }
 
     describe "start" do
       it "prints out the board" do

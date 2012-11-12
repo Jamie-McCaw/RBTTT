@@ -1,13 +1,16 @@
 class Board
-  THREEBYTHREE = 9
   attr_accessor :cells
 
-  def initialize(cells = [0,1,2,3,4,5,6,7,8])
+  def initialize(cells)
   	@cells = cells
   end
 
-  def dup
-  	Board.new(@cells.dup)
+  def is_3x3?
+    self.cells.count == 9
+  end
+
+  def is_4x4?
+    self.cells.count == 16
   end
 
   def available_moves
@@ -48,7 +51,7 @@ class Board
   end
 
   def player_wins?(type)
-    moves = cells.count == THREEBYTHREE ? winning_moves_three_by_three : winning_moves_four_by_four
+    moves = winning_moves
     moves.each do |move_set|
       if move_set.all? { |cell| cell == type}
         return true
@@ -57,65 +60,4 @@ class Board
     return false
   end
 
-  def board_design
-    if @cells.count == 9
-      return board_design_three_by_three
-    elsif @cells.count == 16
-      return board_design_four_by_four
-    end
-  end
-
-  def board_design_three_by_three
-    board = <<-BOARD
- #{@cells[0]} | #{@cells[1]} | #{@cells[2]}
----+---+---
- #{@cells[3]} | #{@cells[4]} | #{@cells[5]}
----+---+---
- #{@cells[6]} | #{@cells[7]} | #{@cells[8]}
-BOARD
-  end
-
-  def board_design_four_by_four
-    board = <<-BOARD
- #{@cells[0]} | #{@cells[1]} | #{@cells[2]} | #{@cells[3]}
----+---+---+---
- #{@cells[4]} | #{@cells[5]} | #{@cells[6]} | #{@cells[7]}
----+---+---+---
- #{@cells[8]} | #{@cells[9]} | #{@cells[10]}| #{@cells[11]}
----+---+---+---
- #{@cells[12]}| #{@cells[13]}| #{@cells[14]}| #{@cells[15]}
-BOARD
-  end
-
-  def winning_moves_three_by_three
-    [
-    [ @cells[0], @cells[1], @cells[2] ],
-    [ @cells[3], @cells[4], @cells[5] ],
-    [ @cells[6], @cells[7], @cells[8] ],
-
-    [ @cells[0], @cells[3], @cells[6] ],
-    [ @cells[1], @cells[4], @cells[7] ],
-    [ @cells[2], @cells[5], @cells[8] ],
-
-    [ @cells[0], @cells[4], @cells[8] ],
-    [ @cells[6], @cells[4], @cells[2] ]
-    ]
-  end
-
-  def winning_moves_four_by_four
-    [
-    [ @cells[0], @cells[1], @cells[2], @cells[3] ],
-    [ @cells[4], @cells[5], @cells[6], @cells[7] ],
-    [ @cells[8], @cells[9], @cells[10], @cells[11] ],
-    [ @cells[12], @cells[13], @cells[14], @cells[15] ],
-
-    [ @cells[0], @cells[4], @cells[8], @cells[12] ],
-    [ @cells[1], @cells[5], @cells[9], @cells[13] ],
-    [ @cells[2], @cells[6], @cells[10], @cells[14] ],
-    [ @cells[3], @cells[7], @cells[11], @cells[15] ],
-
-    [ @cells[0], @cells[5], @cells[10], @cells[15] ],
-    [ @cells[3], @cells[6], @cells[9], @cells[12] ],
-    ]
-  end
 end

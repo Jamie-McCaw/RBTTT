@@ -1,5 +1,5 @@
 class AI
-    
+
   attr_accessor :type
 
   def initialize(type)
@@ -8,23 +8,29 @@ class AI
     @best_move = nil
   end
 
+  def second_move_of_4_x_4?(board)
+    board.is_4x4? && board.available_moves == 15
+  end
+
+  def fourth_move_of_4_x_4?(board)
+    board.is_4x4? && board.available_moves == 13
+  end
+
   def make_move(board)
-    if board.cells.count == 16 && board.available_moves == 15
-      if board.cells[5] == 5
-        @best_move = 5
-      else 
-        @best_move = 6
-      end
-    elsif board.cells.count == 16 && board.available_moves == 13
-      if board.cells[6] == 6
-        @best_move = 6
-      else
-        @best_move = 10
-      end
+    if optimizable?(board)
+      @best_move = optimized_move(board)
     else
       negamax(board, @type, 1, -@infinity, @infinity)
     end
     return @best_move
+  end
+
+  def optimized_move(board)
+    return board.available_spaces.shuffle.first
+  end
+
+  def optimizable?(board)
+    return second_move_of_4_x_4?(board) || fourth_move_of_4_x_4?(board)
   end
 
   def opponent(piece)
@@ -59,6 +65,6 @@ class AI
         break if alpha >= beta
       end
       return alpha
-    end 
+    end
   end
 end
