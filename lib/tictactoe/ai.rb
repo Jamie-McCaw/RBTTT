@@ -4,7 +4,7 @@ class AI
 
   def initialize(type)
     @type = type
-    @infinity = Float::INFINITY
+    @infinity = 10
     @best_move = nil
   end
 
