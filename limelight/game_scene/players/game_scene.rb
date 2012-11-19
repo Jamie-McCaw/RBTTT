@@ -29,7 +29,7 @@ module GameScene
 	end
 
 	def update_display
-		scene.find('display').text = 'Still Playing'
+		scene.find('display').text = "X's Turn"
 	end
 
 	def stalemate
