@@ -12,28 +12,11 @@ limelight_board {
 	height 520
 	padding 20
 }
-output_label {
-	width 300
-	height 60
-	top_margin 10
-}
-board {
-	width 300
-	height 300
-}
-cell {
-	height 100
-	width 100
-	border_color :black
-	border_width 2
-	horizontal_alignment :center
-	vertical_alignment :center
-	font_size 48
-}
 button_row {
   width 300
   height :auto
   horizontal_alignment :center
+  vertical_alignment :center
 }
 
 button {
@@ -49,4 +32,25 @@ button {
   vertical_alignment :center
   right_margin 5
   left_margin 5
+  hover do 
+  	background_color :white
+  	text_color :black
+  end
+}
+
+logo {
+	width 300
+	height 300
+	margin 20
+}
+text {
+	width 100
+	height 100
+	background_color :blue
+	text_color :white
+	border_color :black
+	border_width 1
+	font_size 30
+	vertical_alignment :center
+	horizontal_alignment :center
 }

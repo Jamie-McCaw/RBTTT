@@ -29,6 +29,7 @@ cell {
 	horizontal_alignment :center
 	vertical_alignment :center
 	font_size 48
+	
 }
 button_row {
   width 300
@@ -39,7 +40,7 @@ button_row {
 button {
   width 150
   height 30
-  rounded_corner_radius 2
+  rounded_corner_radius 5
   border_color :black
   border_width 1
   font_size 12
@@ -49,4 +50,8 @@ button {
   vertical_alignment :center
   right_margin 5
   left_margin 5
+    hover do 
+  	background_color :white
+  	text_color :black
+  end
 }

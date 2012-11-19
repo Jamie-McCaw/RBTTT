@@ -21,8 +21,6 @@ module Production
   def production_opening
   	require 'rubygems'
   	require 'pry'
-#    $: << File.expand_path(File.dirname(__FILE__) + "/../lib")
-#    require 'tictactoe'
   end
 #
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
