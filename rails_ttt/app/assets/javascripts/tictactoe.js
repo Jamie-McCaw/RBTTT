@@ -1,5 +1,3 @@
-
-
 function make_move(cell){ 
 	$.ajaxSetup({async:false});
 

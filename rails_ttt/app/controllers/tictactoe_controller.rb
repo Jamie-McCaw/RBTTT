@@ -11,8 +11,9 @@ class TictactoeController < ApplicationController
 
 	def move
 		game = session[:game]
-		if game.board.game_over? || game.board.cells[params["cell"].to_i] == 'O' || game.board.cells[params["cell"].to_i] == 'X'
-			render :json => {:invalid => "Invalid Move"}
+		if game.board.game_over? || !game.board.move_available?(params['cell'].to_i)
+			@move = 'invalid'
+			check_game_state(game)
 		else
 			game.board.move(params["cell"].to_i, 'X')
 			@move = game.ai.make_move(game.board)
@@ -27,6 +28,8 @@ class TictactoeController < ApplicationController
 			game_over(game)
 		elsif game.board.tie?
 			stalemate(game)
+		elsif @move == 'invalid'
+			invalid_move(game)	
 		else
 			make_move(game)
 		end
@@ -42,5 +45,9 @@ class TictactoeController < ApplicationController
 
 	def make_move(game)
 		render :json => { :player => params[:cell], :comp => @move }
+	end
+
+	def invalid_move(game)
+		render :json => {:invalid => "Invalid Move"}
 	end
 end
