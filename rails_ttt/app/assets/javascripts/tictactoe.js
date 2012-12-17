@@ -4,6 +4,9 @@ function make_move(cell){
 	$.get('/move/' + cell.id, function(data) {
 		if (data['invalid'] != undefined) {
 			alert('Invalid Move');
+		} else if (data['comp'] == 'invalid') {
+			alert('Invalid Move');
+
 		}	else if (data['game_over'] != undefined) {
 			document.getElementById('label').innerHTML = data['game_over'];
 			document.getElementById(cell.id).innerHTML = '<br />' + 'X';

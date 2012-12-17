@@ -1,4 +1,5 @@
 RailsTtt::Application.routes.draw do
+  resources :Tictactoe
   root to: 'tictactoe#home'
   match 'move/:cell' => 'tictactoe#move'
 
