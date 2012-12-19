@@ -1,7 +1,12 @@
 RailsTtt::Application.routes.draw do
   resources :Tictactoe
+  resources :Twoplayer
   root to: 'tictactoe#home'
   match 'move/:cell' => 'tictactoe#move'
+  match 'twoplayer' => 'twoplayer#home'
+  match 'twoplayer/move/:cell' => 'twoplayer#move'
+  match 'twoplayer/:id' => 'twoplayer#second_player'
+  match 'board' => 'twoplayer#board'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
